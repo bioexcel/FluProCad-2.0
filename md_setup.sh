@@ -56,7 +56,7 @@ $PYTHON_VERSION build_mutation.py -modelname ${modelname} -suffix ${suffix} -res
 if [[ ! -s ${modelname}-${suffix}.pdb ]]; then
         echo "E> Oops!! Something went wrong there. Re-check your input model for residue numbering/ missing residues and the log files"
         tail -n 2 ${modelname}-${suffix}.log
-        exit
+        exit 2
 fi
 
 ################### CHECK GROMACS VERSION AND ADD PREFIX/SUFFIX ACCORDINGLY ############################
@@ -125,7 +125,7 @@ alias mdrun='${GMX_PREFIX} mdrun'
 if [[ ! -s ${modelname}-${suffix}.pdb ]]; then 
 	echo "E> Oops!! Something went wrong there. Re-check your input model for residue numbering/ missing residues and the log files"
 	tail -n 2 ${modelname}-${suffix}.log
-	exit 2
+	exit 3
 else
 	sed -i 's/CLE /CLEU/;s/NLY /NLYP/' ${modelname}-${suffix}.pdb
 	rm -rf ${modelname}-${suffix}
@@ -145,7 +145,7 @@ else
 	echo "1" | pdb2gmx -f ${modelname}-${suffix}.pdb -water tip3p -ignh >& pdb2gmx.log
 	if [[ ! -s conf.gro ]]; then
 		echo "E> (pdb2gmx) Failed .. check 'pdb2gmx.log' "
-		exit 3
+		exit 4
 	else
 		grep -A 1 "PLEASE NOTE" pdb2gmx.log | tail -n 1
 		grep "Total charge in system" pdb2gmx.log
@@ -157,7 +157,7 @@ else
 	genbox -cp ed.gro -cs spc216.gro -p -o box.gro >& genbox.log
 	if [[ ! -s box.gro ]]; then
                	echo "E> (genbox) Failed .. check 'genbox.log' "
-		exit 4
+		exit 5
 	else
 		echo $(grep 'SOL molecules' genbox.log | awk '{print "Added",$3,$4,$5}')
 	fi
@@ -167,7 +167,7 @@ else
 	echo "SOL" | genion -s genion.tpr -p topol.top -o ions.gro -pname Na -nname Cl -neutral -conc 0.15 >& genion.log
 	if [[ ! -s genion.tpr || ! -s ions.gro ]]; then
 		echo "E> Adding ions failed .. check 'grompp.log and/or genion.log' "
-		exit 5
+		exit 6
 	else
 		tail -n 1 genion.log
 	fi
