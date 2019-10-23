@@ -31,6 +31,7 @@ if [ $pythonversion = 4 ] ; then PYTHON_VERSION=python$pythonversion4 ; fi
 cat << EOF >> ~/.bashrc
 MODINSTALL="${MODINSTALL}"
 EXECUTABLE_TYPE="${EXECUTABLE_TYPE}"
+EOF
 
 echo '######### User specific aliases and functions ##############
 if [ -z $PYTHONPATH ]; then
