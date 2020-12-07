@@ -30,16 +30,16 @@ Next, install the molecular modelling package MODELLER. You will also need to re
 Download the generic Unix tarball version and change to the directory where you downloaded the.tar.gz file. Unpack the file with following command:
 (replace modeller-v.xx with the MODELLER version you have downloaded. Ex: modeller-9.22):
 
->>>	tar -xvzf modeller-v.xx.tar.gz 
+>>	tar -xvzf modeller-v.xx.tar.gz 
 
 Since MODELLER is used here as a python module, check the version of python installed on your system. Currently any version between 2.3 and 3.7 is supported by MODELLER. 
 Now run the following command to add the MODELLER library path into the installation file: 
 (replace modeller-v.xx with the MODELLER version you have downloaded. Ex: modeller-9.22):
 
->>>	cd modeller-v.xx
->>>	cat Install ../mod_path.dat > Install_new
->>>	sed -i "s/mkdir -p/mkdir -p -m 755/" Install_new
->>>	chmod u+x Install_new
+>>	cd modeller-v.xx
+>>	cat Install ../mod_path.dat > Install_new
+>>	sed -i "s/mkdir -p/mkdir -p -m 755/" Install_new
+>>	chmod u+x Install_new
 
 Run the installation script and answer the questions as prompted. If you make any mistakes, you can re-run the script.
 
@@ -53,7 +53,7 @@ Run the installation script and answer the questions as prompted. If you make an
 
 #NOTE: For using shared installation of MODELLER export the following paths or add them to the bashrc file
 
->>>	export MODINSTALL="/projappl/vamodi/modeller9.22"
+>>>	export MODINSTALL="/file-path/modeller9.22"
 >>>	export EXECUTABLE_TYPE="x86_64-intel8"
 >>>	export PYTHONPATH="${PYTHONPATH}:${MODINSTALL}/modlib:${MODINSTALL}/lib/${EXECUTABLE_TYPE}/${PYTHON_VERSION}"
 >>>	export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${MODINSTALL}/lib/${EXECUTABLE_TYPE}"
