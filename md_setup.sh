@@ -63,8 +63,8 @@ fi
 gmxversion1="4.x"
 gmxversion2="5.x"
 gmxversion3="2016.x"
-gmxversion4="2017.x"
-gmxversion5="2019.x"
+gmxversion4="2018.x"
+gmxversion5="2020.x"
 
 echo "------------------------------------------------------------------------"
 echo
@@ -74,7 +74,7 @@ echo '   1) 4.x '
 echo '   2) 5.x'
 echo '   3) 2016.x' 
 echo '   4) 2018.x'
-echo '   5) 2019.x'
+echo '   5) 2020.x'
 
 printf "Select the version of GROMACS loaded/installed  on your system:"
 read ans
@@ -130,7 +130,7 @@ else
 	sed -i 's/CLE /CLEU/;s/NLY /NLYP/' ${modelname}-${suffix}.pdb
 	rm -rf ${modelname}-${suffix}
 	mkdir ${modelname}-${suffix}
-        cp -r amber03_gfp.ff *.dat mdp_files/*.mdp ${modelname}-${suffix}.pdb ${modelname}-${suffix}/
+        cp -r amber03_gfp.ff residuetypes.dat specbond.dat xlateat.dat mdp_files/*.mdp ${modelname}-${suffix}.pdb ${modelname}-${suffix}/
 	mv ${modelname}-${suffix}.pdb ${modelname}-${suffix}.log ${modelname}-${suffix}/
 	cd ${modelname}-${suffix}
 
@@ -171,7 +171,11 @@ else
 	else
 		tail -n 1 genion.log
 	fi
+	rm -f \#*
+	sed -i "s/\.\/amber/\.\.\/amber/"  *.top
+	rm -rf amber03_gfp.ff residuetypes.dat  specbond.dat  xlateat.dat
 	cd ..
+	cp gromacs_jobs.sh analyze-jobs.sh analyze-traj.sh ${modelname}-${suffix}/
 fi
 
 

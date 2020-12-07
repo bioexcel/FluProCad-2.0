@@ -29,11 +29,10 @@ if [ $pythonversion = 3 ] ; then PYTHON_VERSION=python$pythonversion3 ; fi
 if [ $pythonversion = 4 ] ; then PYTHON_VERSION=python$pythonversion4 ; fi
 
 cat << EOF >> ~/.bashrc
-MODINSTALL="${MODINSTALL}"
-EXECUTABLE_TYPE="${EXECUTABLE_TYPE}"
-EOF
+export MODINSTALL="/projappl/vamodi/modeller9.22"
+export EXECUTABLE_TYPE="x86_64-intel8"
 
-echo '######### User specific aliases and functions ##############
+######### User specific aliases and functions ##############
 if [ -z $PYTHONPATH ]; then
     export PYTHONPATH="${MODINSTALL}/modlib:${MODINSTALL}/lib/${EXECUTABLE_TYPE}/${PYTHON_VERSION}"
 else
@@ -44,9 +43,6 @@ if [ -z $LD_LIBRARY_PATH ]; then
     export LD_LIBRARY_PATH="${MODINSTALL}/lib/${EXECUTABLE_TYPE}"
 else
     export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${MODINSTALL}/lib/${EXECUTABLE_TYPE}"
-fi' >> ~/.bashrc
+fi
 
-
-
-
-
+EOF
