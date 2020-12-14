@@ -4,15 +4,16 @@ Introduction
 FluProCad is a package with short python and bash scripts which can introduce amino-acid mutations in pdb files for fluorescent proteins, generating Gromacs compatible topologies, for molecular dynamics, extracting 1 or more solution structures for the mutant protein (comparable/equivalent to experimental crystal structure) with additional trajectory analysis.
 
 Software Requirements
-# Python
-# Modeller
-# Gromacs
+- Python
+- Modeller
+- Gromacs
 
 We will start by extracting the files from the FluProCad tarball file. 
 
 >>>	git clone 
 >>>	tar -xzvf FluProCad-2.0.tar.gz
 >>>	cd FluProCad-2.0
+>>> chmod u+x *.sh
 
 Installing Modeller package
 Before we start with the installation, run the following command in your terminal/console to check your system architecture:
