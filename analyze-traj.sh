@@ -12,7 +12,7 @@ local a=`du -sh $1 2> /dev/null | awk '{print $1}'`
 echo $a
 }
 
-if [[ $# -ne 3 ]]; then
+if [[ $# -ne 1 ]]; then
    echo "------------------------------------------------------------------------"
    echo 
    echo "$0 out-tag"
@@ -23,7 +23,7 @@ if [[ $# -ne 3 ]]; then
 fi
 
 TPR=topol.tpr
-XTC=traj.xtc
+XTC=traj_comp.xtc
 TAG=$1
 
 ##########################################################################################################
@@ -103,7 +103,10 @@ sed -i '/SOL /d; /Na  /d; /Cl  /d' prot.top
 #echo "q " | make_ndx -f ions.gro -o rmsd.ndx
 echo "------------------------------------------------------------------------"
 echo
-read -p "W> Enter 3 or 4 letter residue name of the CHromophore in the system:" cronm
+read -p "W> Enter 3 or 4 letter residue name of the CHromophore in the system (Ex: SYG or TYG or AYG):" cronm
+if [ -z "$cronm" ]; then
+   cronm=$(grep "YG" topol.top | tail -1 | awk '{print $4}')
+fi
 
 make_ndx -f ions.gro -o rmsd.ndx << EOF
 q
@@ -191,6 +194,8 @@ echo "Solute Solute" | rms -f ${TAG}-prot-clust.xtc -o rmsd-prot-${TAG}.xvg -fit
 if [[ ! -s rmsd-prot-${TAG}.xvg ]]; then
    echo "E> (g_rms:0) Failed ... check 'log' "
    exit
+else
+   mv rmsd-prot-${TAG}.xvg MD-analysis/
 fi
 
 echo "M> Running g_rms "
@@ -199,6 +204,8 @@ echo "Backbone Backbone" | rms -f ${TAG}-prot-clust.xtc -o rmsd-bb-${TAG}.xvg -f
 if [[ ! -s rmsd-bb-${TAG}.xvg ]]; then
    echo "E> (g_rms:0) Failed ... check 'log' "
    exit
+else
+   mv rmsd-bb-${TAG}.xvg MD-analysis/
 fi
 
 echo "M> Running g_gyrate to extract Radius of Gyration "
@@ -227,7 +234,7 @@ fi
 
 echo "M> Running g_rms against average structure from g_rmsf "
 echo "          Protein + chromophore"
-echo "Solute Solute"| rms -f ${TAG}-prot-clust.xtc -s xaver_${TAG}.pdb -n rmsd.ndx -fit rot+trans -o rmsd-xaver-prot >& log
+echo "Solute Solute"| rms -f ${TAG}-prot-clust.xtc -s MD-analysis/xaver_${TAG}.pdb -n rmsd.ndx -fit rot+trans -o rmsd-xaver-prot >& log
 if [[ ! -s rmsd-xaver-prot.xvg ]]; then
    echo "E> (g_rms:0) Failed ... check 'log' "
    exit
@@ -252,8 +259,8 @@ fi
 
 ##########################################################################################################
 
-rm -f tt 
+rm -f log dummy.mdp
 rm -f ${TAG}-prot.xtc ${TAG}-prot-clust.xtc
 echo  "M> $XTC: `fdu $XTC`  clust-fit:`fdu ${TAG}-prot-clust-fit.xtc` "
-mv ${TAG}-prot-clust-fit.xtc MD-analysis/
+mv ${TAG}-prot-clust-fit.xtc 100ps.* prot.* rmsd.ndx MD-analysis/
 echo "M> Done"
