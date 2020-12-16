@@ -173,7 +173,7 @@ else
 	fi
 	rm -f \#*
 	sed -i "s/\.\/amber/\.\.\/amber/"  *.top
-	rm -rf amber03_gfp.ff residuetypes.dat  specbond.dat  xlateat.dat
+	rm -rf amber03_gfp.ff specbond.dat  xlateat.dat
 	cd ..
 	cp gromacs_jobs.sh analyze-jobs.sh analyze-traj.sh ${modelname}-${suffix}/
 fi
